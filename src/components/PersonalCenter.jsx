@@ -42,7 +42,7 @@ const PersonalCenter = ({
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="font-['ZCOOL_XiaoWei'] text-xl">校园美食探索者</h1>
+                <h1 className="font-['ZCOOL_XiaoWei'] text-xl">我的主页</h1>
               {isStudentVerified && (
                 <div className="relative inline-flex items-center">
                   <span className="bg-blue-50 text-blue-700 text-xs px-2 py-1 rounded-full flex items-center gap-1">
@@ -66,7 +66,7 @@ const PersonalCenter = ({
             </div>
             <div className="flex items-center gap-1.5 text-sm text-[#776B5D] mt-1">
               <MapPin size={14} className="text-[#D94F2B]" />
-              {currentSchool === '全部' ? '五角场高校生活圈' : currentSchool}
+              当前区域：{currentSchool === '全部' ? '五角场' : currentSchool}
             </div>
           </div>
         </div>
