@@ -8,7 +8,7 @@ import RankingStrip from '../components/RankingStrip';
 import React, { useEffect, useRef, useState } from 'react';
 import DecideButton from '../components/DecideButton';
 import TopBar from '../components/TopBar';
-import { Heart, User, GraduationCap, Plus, HelpCircle } from 'lucide-react';
+import { GraduationCap, Heart, HelpCircle, Plus, User } from 'lucide-react';
 import RestaurantCard from '../components/RestaurantCard';
 import { useTranslation } from 'react-i18next';
 import RecommendForm from '../components/RecommendForm';
@@ -17,6 +17,7 @@ import BottomNav from '../components/BottomNav';
 import { needIcons } from '../data/needOptions';
 import RestaurantDetailModal from '../components/RestaurantDetailModal';
 import ProfileDashboard from '../components/ProfileDashboard';
+import PersonalCenter from '../components/PersonalCenter';
 import '../i18n';
 const Index = () => {
   const { t, i18n } = useTranslation();
@@ -32,6 +33,7 @@ const Index = () => {
   const [mapHighlightId, setMapHighlightId] = useState(null);
   const [selectedRestaurantId, setSelectedRestaurantId] = useState(null);
   const [detailSource, setDetailSource] = useState('list');
+  const [showProfileStats, setShowProfileStats] = useState(false);
   const hasTrackedVisit = useRef(false);
 
   const {
@@ -135,7 +137,14 @@ const Index = () => {
 
   const handleBottomTabChange = (tab) => {
     setActiveTab(tab);
+    if (tab === 'profile') setShowProfileStats(false);
     trackEvent('navigation_select', { tab });
+  };
+
+  const handleStudentVerification = () => {
+    setIsStudentVerified(true);
+    trackEvent('student_verification_demo_complete', { school: currentSchool });
+    showToastMessage('学生认证成功（MVP 流程演示）');
   };
 
   const handleToggleFavorite = (restaurantId, source) => {
@@ -231,15 +240,36 @@ const Index = () => {
           </div>
         );
       case 'profile':
+        if (showProfileStats) {
+          return (
+            <ProfileDashboard
+              stats={stats}
+              favoriteRestaurants={favoriteRestaurants}
+              decisions={decisions}
+              allRestaurants={allRestaurants}
+              onRestaurantClick={handleRestaurantClick}
+              onToggleFavorite={handleToggleFavorite}
+              onExportData={exportData}
+              onBack={() => setShowProfileStats(false)}
+            />
+          );
+        }
         return (
-          <ProfileDashboard
-            stats={stats}
+          <PersonalCenter
+            currentSchool={currentSchool}
+            isStudentVerified={isStudentVerified}
+            showStudentTooltip={showStudentTooltip}
+            onToggleStudentTooltip={() => setShowStudentTooltip(previous => !previous)}
+            onVerifyStudent={handleStudentVerification}
+            myRecommendations={myRecommendations}
+            onRecommendClick={handleRecommendClick}
             favoriteRestaurants={favoriteRestaurants}
-            decisions={decisions}
-            allRestaurants={allRestaurants}
             onRestaurantClick={handleRestaurantClick}
             onToggleFavorite={handleToggleFavorite}
-            onExportData={exportData}
+            decisions={decisions}
+            allRestaurants={allRestaurants}
+            stats={stats}
+            onViewStats={() => setShowProfileStats(true)}
           />
         );
       case 'legacy-profile':

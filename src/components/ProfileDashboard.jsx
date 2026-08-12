@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart3, Clock3, Download, Heart, MousePointerClick, Target } from 'lucide-react';
+import { ArrowLeft, BarChart3, Clock3, Download, Heart, MousePointerClick, Target } from 'lucide-react';
 
 const ProfileDashboard = ({
   stats,
@@ -9,6 +9,7 @@ const ProfileDashboard = ({
   onRestaurantClick,
   onToggleFavorite,
   onExportData,
+  onBack,
 }) => {
   const restaurantById = new Map(allRestaurants.map(restaurant => [restaurant.id, restaurant]));
   const formatTime = value => new Intl.DateTimeFormat('zh-CN', {
@@ -23,7 +24,10 @@ const ProfileDashboard = ({
   const maxFunnel = Math.max(...funnel.map(item => item.value), 1);
 
   return (
-    <div className="p-4 sm:p-5 space-y-4">
+    <div className="max-w-3xl mx-auto p-4 sm:p-5 space-y-4">
+      <button type="button" onClick={onBack} className="flex items-center gap-1.5 text-sm text-[#6F6253] hover:text-[#18120A]">
+        <ArrowLeft size={17} /> 返回个人中心
+      </button>
       <section className="bg-[#18120A] text-white rounded-2xl p-5">
         <div className="flex items-start justify-between gap-3">
           <div>
