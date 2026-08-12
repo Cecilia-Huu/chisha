@@ -237,6 +237,7 @@ const resources = {
 
       fullRanking: {
         title: '五角场完整榜单',
+        homeEntry: '完整榜单 · {{count}}家 →',
         subtitle: '覆盖同济、复旦、财大与五角场商圈',
         total: '共收录 {{count}} 家',
         allAreas: '全部区域',
@@ -557,6 +558,7 @@ const resources = {
 
       fullRanking: {
         title: 'Complete Wujiaochang Ranking',
+        homeEntry: 'Full ranking · {{count}} →',
         subtitle: 'Tongji, Fudan, SHUFE and the wider Wujiaochang area',
         total: '{{count}} places listed',
         allAreas: 'All areas',

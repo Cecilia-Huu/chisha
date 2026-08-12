@@ -4,7 +4,6 @@ import { useUserActivity } from '../hooks/useUserActivity';
 import WizardModal from '../components/WizardModal';
 import NeedFilter from '../components/NeedFilter';
 import Toast from '../components/Toast';
-import RankingStrip from '../components/RankingStrip';
 import React, { useEffect, useRef, useState } from 'react';
 import DecideButton from '../components/DecideButton';
 import TopBar from '../components/TopBar';
@@ -55,7 +54,6 @@ const Index = () => {
   const {
     favorites,
     decisions,
-    events,
     stats,
     trackEvent,
     toggleFavorite,
@@ -65,13 +63,6 @@ const Index = () => {
 
   const selectedRestaurant = allRestaurants.find(restaurant => restaurant.id === selectedRestaurantId) || null;
   const favoriteRestaurants = allRestaurants.filter(restaurant => favorites.includes(restaurant.id));
-  const restaurantViewCounts = events
-    .filter(event => event.type === 'detail_view')
-    .reduce((counts, event) => ({
-      ...counts,
-      [event.payload.restaurantId]: (counts[event.payload.restaurantId] || 0) + 1,
-    }), {});
-
   useEffect(() => {
     if (!hasTrackedVisit.current) {
       hasTrackedVisit.current = true;
@@ -439,15 +430,27 @@ const Index = () => {
             />
 
             {/* 附近热门列表（与需求筛选联动） */}
-            <div className="flex items-baseline justify-between px-5 py-6 pb-3">
+            <div className="flex items-center justify-between gap-3 px-5 py-6 pb-3">
               <div className="font-['ZCOOL_XiaoWei'] text-lg">
                 {getListTitle()}
               </div>
-              <div
-                className="text-xs text-gray-600 cursor-pointer underline decoration-2 underline-offset-2"
-                onClick={resetFilter}
-              >
-                {t('resetFilter')}
+              <div className="flex items-center gap-3 flex-shrink-0">
+                {activeNeed !== 'all' && (
+                  <button
+                    type="button"
+                    className="text-xs text-gray-500 underline decoration-2 underline-offset-2"
+                    onClick={resetFilter}
+                  >
+                    {t('resetFilter')}
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => handleOpenFullRanking('popularity')}
+                  className="text-xs font-semibold text-[#D94F2B] whitespace-nowrap"
+                >
+                  {t('fullRanking.homeEntry', { count: allRestaurants.length })}
+                </button>
               </div>
             </div>
 
@@ -473,14 +476,6 @@ const Index = () => {
                 )}
               </div>
             </div>
-
-            <RankingStrip
-              restaurants={restaurants}
-              onRestaurantClick={(id) => handleRestaurantClick(id, 'ranking')}
-              activeNeed={activeNeed}
-              viewCounts={restaurantViewCounts}
-              onViewFullRanking={handleOpenFullRanking}
-            />
 
             <WizardModal
               isOpen={isWizardOpen}
