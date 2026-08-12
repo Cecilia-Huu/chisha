@@ -41,6 +41,7 @@ const UniversityMap = ({ restaurants, onRestaurantClick, activeNeed, currentScho
 
   // 筛选餐厅
   const filteredRestaurants = restaurants.filter(restaurant => {
+    if (restaurant.dist == null) return false;
     if (activeNeed === 'all') return true;
     return restaurant.needs.includes(activeNeed);
   });

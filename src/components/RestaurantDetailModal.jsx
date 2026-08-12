@@ -1,7 +1,7 @@
 import React from 'react';
 import { CheckCircle, Clock3, Heart, MapPin, RefreshCw, Star, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { getRestaurantName, getRestaurantTag, getSchoolName } from '../lib/restaurantI18n';
+import { getAreaName, getRestaurantName, getRestaurantTag, getSchoolName } from '../lib/restaurantI18n';
 
 const RestaurantDetailModal = ({
   restaurant,
@@ -17,8 +17,10 @@ const RestaurantDetailModal = ({
 
   const zh = i18n.language === 'zh';
   const restaurantName = getRestaurantName(restaurant, i18n.language);
-  const walkingMinutes = Math.max(1, Math.ceil(restaurant.dist / 80));
-  const sceneReason = activeNeed !== 'all' && restaurant.needs.includes(activeNeed)
+  const walkingMinutes = restaurant.dist ? Math.max(1, Math.ceil(restaurant.dist / 80)) : null;
+  const sceneReason = restaurant.dataStatus === 'collected'
+    ? (zh ? '来自公开商场目录或商圈餐饮信息，具体数据等待用户核验' : 'Listed from public mall or area dining information; details await community verification')
+    : activeNeed !== 'all' && restaurant.needs.includes(activeNeed)
     ? `${zh ? '符合你的场景' : 'Matches your need'}：${t(`needs.${activeNeed}`)}`
     : (zh ? '综合评分、距离和学生反馈推荐' : 'Recommended by rating, distance and student feedback');
 
@@ -54,12 +56,17 @@ const RestaurantDetailModal = ({
                     <CheckCircle size={12} /> {zh ? '学生核验' : 'Verified'}
                   </span>
                 )}
+                {!restaurant.verified && restaurant.dataStatus === 'collected' && (
+                  <span className="inline-flex items-center gap-1 bg-amber-50 text-amber-700 px-2 py-1 rounded-full text-xs">
+                    <Clock3 size={12} /> {t('fullRanking.pending')}
+                  </span>
+                )}
               </div>
               <div className="flex items-center gap-1 text-sm mt-2 text-[#6F6253]">
-                <Star size={15} className="fill-[#F0A500] text-[#F0A500]" />
-                <strong className="text-[#18120A]">{restaurant.rating}</strong>
-                <span>· ¥{restaurant.price}/{zh ? '人' : 'person'}</span>
-                <span>· {getSchoolName(restaurant.school, i18n.language)}</span>
+                {restaurant.rating ? <Star size={15} className="fill-[#F0A500] text-[#F0A500]" /> : <Clock3 size={15} />}
+                <strong className="text-[#18120A]">{restaurant.rating || (zh ? '待评分' : 'Not rated')}</strong>
+                <span>· {restaurant.price ? `¥${restaurant.price}/${zh ? '人' : 'person'}` : (zh ? '价格待核验' : 'Price pending')}</span>
+                <span>· {restaurant.area ? getAreaName(restaurant.area, i18n.language) : getSchoolName(restaurant.school, i18n.language)}</span>
               </div>
             </div>
             <button
@@ -75,17 +82,17 @@ const RestaurantDetailModal = ({
           <div className="grid grid-cols-3 gap-2 mt-5">
             <div className="bg-[#F7F3EE] rounded-xl p-3 text-center">
               <MapPin size={17} className="mx-auto text-[#D94F2B]" />
-              <div className="font-semibold text-sm mt-1">{restaurant.dist}m</div>
+              <div className="font-semibold text-sm mt-1">{restaurant.dist ? `${restaurant.dist}m` : (zh ? '待核验' : 'Pending')}</div>
               <div className="text-[11px] text-[#8B7D6C]">{zh ? '距离' : 'Distance'}</div>
             </div>
             <div className="bg-[#F7F3EE] rounded-xl p-3 text-center">
               <Clock3 size={17} className="mx-auto text-[#D94F2B]" />
-              <div className="font-semibold text-sm mt-1">{walkingMinutes}{zh ? '分钟' : ' min'}</div>
+              <div className="font-semibold text-sm mt-1">{walkingMinutes ? `${walkingMinutes}${zh ? '分钟' : ' min'}` : '—'}</div>
               <div className="text-[11px] text-[#8B7D6C]">{zh ? '步行' : 'Walk'}</div>
             </div>
             <div className="bg-[#F7F3EE] rounded-xl p-3 text-center">
-              <span className="text-base">{restaurant.open ? '🟢' : '⚪️'}</span>
-              <div className="font-semibold text-sm mt-1">{restaurant.open ? (zh ? '营业中' : 'Open') : (zh ? '暂未营业' : 'Closed')}</div>
+              <span className="text-base">{restaurant.open === true ? '🟢' : restaurant.open === false ? '⚪️' : '🟡'}</span>
+              <div className="font-semibold text-sm mt-1">{restaurant.open === true ? (zh ? '营业中' : 'Open') : restaurant.open === false ? (zh ? '暂未营业' : 'Closed') : (zh ? '待核验' : 'Pending')}</div>
               <div className="text-[11px] text-[#8B7D6C]">{zh ? '状态' : 'Status'}</div>
             </div>
           </div>
@@ -115,10 +122,10 @@ const RestaurantDetailModal = ({
             <button
               type="button"
               onClick={onDecide}
-              disabled={!restaurant.open}
+              disabled={restaurant.open === false}
               className="rounded-xl py-3 bg-[#D94F2B] text-white font-semibold shadow-md shadow-[#D94F2B]/20 disabled:bg-gray-300 disabled:shadow-none"
             >
-              {restaurant.open ? (zh ? '就吃这家' : 'Choose this one') : (zh ? '暂未营业' : 'Currently closed')}
+              {restaurant.open === false ? (zh ? '暂未营业' : 'Currently closed') : (zh ? '就吃这家' : 'Choose this one')}
             </button>
           </div>
         </div>

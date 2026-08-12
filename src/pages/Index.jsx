@@ -18,7 +18,8 @@ import { needIcons } from '../data/needOptions';
 import RestaurantDetailModal from '../components/RestaurantDetailModal';
 import ProfileDashboard from '../components/ProfileDashboard';
 import PersonalCenter from '../components/PersonalCenter';
-import { formatRestaurantMeta, getRestaurantName } from '../lib/restaurantI18n';
+import { getRestaurantName } from '../lib/restaurantI18n';
+import FullRanking from '../components/FullRanking';
 import '../i18n';
 const Index = () => {
   const { t, i18n } = useTranslation();
@@ -35,6 +36,7 @@ const Index = () => {
   const [selectedRestaurantId, setSelectedRestaurantId] = useState(null);
   const [detailSource, setDetailSource] = useState('list');
   const [showProfileStats, setShowProfileStats] = useState(false);
+  const [fullRankingSort, setFullRankingSort] = useState('popularity');
   const hasTrackedVisit = useRef(false);
 
   const {
@@ -142,6 +144,11 @@ const Index = () => {
     trackEvent('navigation_select', { tab });
   };
 
+  const handleOpenFullRanking = (sort = 'popularity') => {
+    setFullRankingSort(sort);
+    handleBottomTabChange('ranking');
+  };
+
   const handleStudentVerification = () => {
     setIsStudentVerified(true);
     trackEvent('student_verification_demo_complete', { school: currentSchool });
@@ -201,44 +208,12 @@ const Index = () => {
           </div>
         );
       case 'ranking':
-        // 当从首页切换到榜单Tab时，传递当前选中的需求维度
         return (
-          <div className="p-5">
-            <div className="font-['ZCOOL_XiaoWei'] text-xl mb-4">
-              {t('todayRanking')}
-            </div>
-            <div className="space-y-3">
-              {[...schoolRestaurants]
-                .sort((a, b) => (restaurantViewCounts[b.id] || 0) - (restaurantViewCounts[a.id] || 0) || b.rating - a.rating)
-                .map((restaurant, index) => (
-                <div
-                  key={restaurant.id}
-                  onClick={() => handleRestaurantClick(restaurant.id)}
-                  className="flex items-center gap-3 bg-white rounded-xl p-4 border border-gray-200 cursor-pointer hover:shadow-md transition-shadow"
-                >
-                  <div className="text-lg font-bold text-gray-600 min-w-[30px]">
-                    {index + 1}
-                  </div>
-                  <div className="text-2xl">{restaurant.emoji}</div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-1">
-                      <span className="font-semibold">{getRestaurantName(restaurant, currentLanguage)}</span>
-                      {restaurant.verified && (
-                        <span className="bg-blue-100 text-blue-800 text-xs px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
-                          <GraduationCap size={10} />
-                          {t('common.verified')}
-                        </span>
-                      )}
-                    </div>
-                    <div className="text-sm text-gray-600">{formatRestaurantMeta(restaurant, currentLanguage)}</div>
-                  </div>
-                  <div className="text-yellow-500 font-semibold">
-                    ⭐ {restaurant.rating}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <FullRanking
+            restaurants={allRestaurants}
+            initialSort={fullRankingSort}
+            onRestaurantClick={(id) => handleRestaurantClick(id, 'full_ranking')}
+          />
         );
       case 'profile':
         if (showProfileStats) {
@@ -504,7 +479,7 @@ const Index = () => {
               onRestaurantClick={(id) => handleRestaurantClick(id, 'ranking')}
               activeNeed={activeNeed}
               viewCounts={restaurantViewCounts}
-              onViewFullRanking={() => handleBottomTabChange('ranking')}
+              onViewFullRanking={handleOpenFullRanking}
             />
 
             <WizardModal

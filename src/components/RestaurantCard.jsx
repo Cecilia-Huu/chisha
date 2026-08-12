@@ -36,6 +36,7 @@ const RestaurantCard = ({ restaurant, onClick, isFavorite, onToggleFavorite }) =
 
   // 根据评分获取星级显示
   const renderStars = (rating) => {
+    if (!rating) return null;
     let starCount = 3;
     let starColor = 'text-amber-600'; // 铜色
     let starSize = 12;
@@ -109,14 +110,14 @@ const RestaurantCard = ({ restaurant, onClick, isFavorite, onToggleFavorite }) =
         <div className="text-xs text-[#9A8A78] font-['DM_Mono'] mb-1.5 flex items-center gap-1">
           <div className="flex items-center gap-0.5">
             {renderStars(restaurant.rating)}
-            <span className="ml-1 text-[#18120A] font-semibold">{restaurant.rating}</span>
+            <span className="ml-1 text-[#18120A] font-semibold">{restaurant.rating || (language === 'zh' ? '待评分' : 'Not rated')}</span>
           </div>
           <span>·</span>
-          <span>¥{restaurant.price}/{t('common.perPerson')}</span>
+          <span>{restaurant.price ? `¥${restaurant.price}/${t('common.perPerson')}` : (language === 'zh' ? '价格待核验' : 'Price pending')}</span>
           <span>·</span>
           <div className="flex items-center gap-1">
             <div className="w-2 h-2 rounded-full border border-blue-300 bg-transparent"></div>
-            <span>{restaurant.dist}m</span>
+            <span>{restaurant.dist ? `${restaurant.dist}m` : restaurant.area}</span>
           </div>
         </div>
         <div className="flex flex-wrap gap-1.25 mb-1.5">

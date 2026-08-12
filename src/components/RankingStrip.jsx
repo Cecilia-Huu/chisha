@@ -66,7 +66,7 @@ const RankingStrip = ({ restaurants, onRestaurantClick, onViewFullRanking, activ
   const getTrendData = (restaurant, index) => {
     const count = viewCounts[restaurant.id] || 0;
     if (count) return { type: 'up', label: t('rankingDetail.deviceViews', { count }) };
-    if (index === 0) return { type: 'stable', label: t('rankingDetail.highRating', { rating: restaurant.rating }) };
+    if (index === 0 && restaurant.rating) return { type: 'stable', label: t('rankingDetail.highRating', { rating: restaurant.rating }) };
     if (index === 1) return { type: 'stable', label: t('rankingDetail.distance', { distance: restaurant.dist }) };
     return { type: 'stable', label: t('rankingDetail.average', { price: restaurant.price }) };
   };
@@ -108,6 +108,7 @@ const RankingStrip = ({ restaurants, onRestaurantClick, onViewFullRanking, activ
 
   // 根据评分获取星级显示
   const renderStars = (rating) => {
+    if (!rating) return null;
     let starCount = 3;
     let starColor = 'text-amber-600'; // 铜色
     let starSize = 12;

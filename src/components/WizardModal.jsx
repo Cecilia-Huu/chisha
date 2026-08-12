@@ -44,7 +44,8 @@ const WizardModal = ({ isOpen, onClose, onResult, onRecommendationGenerated, res
   };
 
   const generateResult = (selectedDistance = distance) => {
-    if (!restaurants || restaurants.length === 0) {
+    const recommendationReadyRestaurants = (restaurants || []).filter(restaurant => restaurant.rating != null && restaurant.distM != null);
+    if (recommendationReadyRestaurants.length === 0) {
       const fallbackResult = {
         id: null,
         name: i18n.language === 'zh' ? '附近暂时没有餐厅' : 'No nearby restaurants yet',
@@ -59,7 +60,7 @@ const WizardModal = ({ isOpen, onClose, onResult, onRecommendationGenerated, res
       return;
     }
 
-    let filtered = [...restaurants];
+    let filtered = [...recommendationReadyRestaurants];
 
     // 预算筛选
     if (budget && budget !== 'any') {
@@ -91,7 +92,7 @@ const WizardModal = ({ isOpen, onClose, onResult, onRecommendationGenerated, res
     // 没有完全匹配时，选择满足条件最多的餐厅，而不是完全随机忽略条件。
     const pool = isExactMatch
       ? filtered
-      : restaurants
+      : recommendationReadyRestaurants
           .map(restaurant => {
             let score = 0;
             if (budget === 'any' || !budget) score += 1;

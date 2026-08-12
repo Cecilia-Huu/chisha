@@ -277,6 +277,45 @@ const mockRestaurants = [
   }
 ];
 
+// 公开商场目录与五角场餐饮榜单中可确认存在的门店。
+// 评分、营业状态和精确距离在用户或线下核验前保持为空，避免把采集信息伪装成实测数据。
+const collectedRestaurantSpecs = [
+  { name: '大树餐厅', nameEn: 'Dashu Restaurant', emoji: '🌳', area: '合生汇', foodType: 'rice', needs: ['date', 'treat', 'birthday', 'dateScene', 'twoPeople', 'takeParents'], tags: [['🌸 氛围餐厅', '🌸 Atmosphere dining', 'purple'], ['📍 合生汇', '📍 Hopson One', 'amber']] },
+  { name: '芸山季·云南野生菌火锅', nameEn: 'Yunshanji Yunnan Mushroom Hot Pot', emoji: '🍄', area: '合生汇', foodType: 'hotpot', needs: ['healthy', 'warmMeal', 'treat', 'comfort', 'dormGroup', 'takeParents'], tags: [['🍄 云南菌菇', '🍄 Yunnan mushrooms', 'green'], ['👥 适合聚餐', '👥 Group-friendly', 'amber']] },
+  { name: '蛙来哒', nameEn: 'Wa Lai Da', emoji: '🐸', area: '合生汇', price: 85, foodType: 'rice', needs: ['spicy', 'bigPortion', 'dormGroup', 'birthday', 'clubDinner', 'largeGroup'], tags: [['🌶️ 香辣牛蛙', '🌶️ Spicy bullfrog', 'red'], ['💰 参考人均¥85', '💰 Est. ¥85/person', 'green']] },
+  { name: '烤匠麻辣烤鱼', nameEn: 'Kaojiang Spicy Grilled Fish', emoji: '🐟', area: '合生汇', foodType: 'hotpot', needs: ['spicy', 'night', 'bigPortion', 'wantSpicyMood', 'dormGroup', 'largeGroup'], tags: [['🌶️ 麻辣烤鱼', '🌶️ Spicy grilled fish', 'red'], ['🌙 深夜选择', '🌙 Late-night option', 'purple']] },
+  { name: '上隐水产海鲜自助', nameEn: 'Shangyin Seafood Buffet', emoji: '🦀', area: '合生汇', foodType: 'hotpot', needs: ['bigPortion', 'treat', 'celebrate', 'birthday', 'graduation', 'largeGroup'], tags: [['🦀 海鲜自助', '🦀 Seafood buffet', 'purple'], ['🎉 适合庆祝', '🎉 Celebration pick', 'amber']] },
+  { name: '安三胖韩国烤肉', nameEn: 'An San Pang Korean BBQ', emoji: '🥩', area: '合生汇', foodType: 'hotpot', needs: ['bigPortion', 'afterSports', 'dormGroup', 'birthday', 'clubDinner'], tags: [['🥩 韩式烤肉', '🥩 Korean BBQ', 'red'], ['👥 聚餐选择', '👥 Group dining', 'amber']] },
+  { name: '鲜得来排骨年糕', nameEn: 'Xiandelai Pork Chop Rice Cakes', emoji: '🍖', area: '合生汇', foodType: 'rice', needs: ['cheap', 'quick', 'soloMeal', 'twoPeople', 'homesick'], tags: [['🍖 上海老味道', '🍖 Shanghai classic', 'amber'], ['⚡ 小吃快餐', '⚡ Quick bite', 'green']] },
+  { name: '松鹤楼面馆', nameEn: 'Songhelou Noodle House', emoji: '🍜', area: '合生汇', foodType: 'noodle', needs: ['warmMeal', 'comfort', 'soloMeal', 'twoPeople', 'takeParents'], tags: [['🍜 苏式汤面', '🍜 Suzhou-style noodles', 'green'], ['👨‍👩‍👧 适合家人', '👨‍👩‍👧 Family-friendly', 'amber']] },
+  { name: '茉莉奶白', nameEn: 'Molly Tea', emoji: '🧋', area: '合生汇', foodType: 'drinks', needs: ['wantSweet', 'study', 'dateScene', 'twoPeople', 'takeoutTogether'], tags: [['🧋 茶饮', '🧋 Tea drinks', 'purple'], ['📍 合生汇', '📍 Hopson One', 'amber']] },
+  { name: 'CRAZYONES西班牙海鲜饭', nameEn: 'CRAZYONES Spanish Paella', emoji: '🥘', area: '合生汇', foodType: 'western', needs: ['date', 'treat', 'celebrate', 'birthday', 'dateScene', 'twoPeople'], tags: [['🥘 西班牙海鲜饭', '🥘 Spanish paella', 'purple'], ['🌸 约会聚餐', '🌸 Dates & gatherings', 'amber']] },
+  { name: '海底捞火锅', nameEn: 'Haidilao Hot Pot', emoji: '🍲', area: '五角场', price: 135, foodType: 'hotpot', needs: ['warmMeal', 'treat', 'birthday', 'dormGroup', 'lateNight', 'largeGroup'], tags: [['🍲 火锅', '🍲 Hot pot', 'red'], ['💰 参考人均¥120–150', '💰 Est. ¥120–150/person', 'green']] },
+  { name: '帕蓝·暹罗料理', nameEn: 'Palan Siam Thai Cuisine', emoji: '🍛', area: '大学路', price: 70, foodType: 'rice', needs: ['spicy', 'date', 'treat', 'dateScene', 'twoPeople', 'takeParents'], tags: [['🍛 泰式料理', '🍛 Thai cuisine', 'amber'], ['💰 参考人均¥60–80', '💰 Est. ¥60–80/person', 'green']] },
+  { name: '九香吧岛', nameEn: 'Jiuxiang Badao Sichuan Cuisine', emoji: '🌶️', area: '国济路', price: 40, foodType: 'rice', needs: ['cheap', 'spicy', 'bigPortion', 'dormGroup', 'clubDinner'], tags: [['🌶️ 川味干锅', '🌶️ Sichuan dry pot', 'red'], ['💰 参考人均¥40', '💰 Est. ¥40/person', 'green']] },
+  { name: '西贝莜面村', nameEn: 'Xibei Northwest Cuisine', emoji: '🥟', area: '五角场万达', price: 83, foodType: 'rice', needs: ['warmMeal', 'bigPortion', 'dormGroup', 'takeParents', 'largeGroup'], tags: [['🥟 西北菜', '🥟 Northwest Chinese', 'amber'], ['💰 参考人均¥83', '💰 Est. ¥83/person', 'green']] },
+  { name: '麦当劳', nameEn: "McDonald's", emoji: '🍔', area: '五角场万达', foodType: 'western', needs: ['cheap', 'quick', 'noqueue', 'soloMeal', 'groupStudy', 'lateNight'], tags: [['🍔 快餐', '🍔 Fast food', 'amber'], ['📍 五角场万达', '📍 Wujiaochang Wanda', 'purple']] },
+];
+
+const collectedRestaurants = collectedRestaurantSpecs.map((restaurant, index) => ({
+  id: 11 + index,
+  ...restaurant,
+  bgColor: 'linear-gradient(135deg,#F4E3C1,#E8B86D)',
+  rating: null,
+  dist: null,
+  meta: null,
+  stags: restaurant.tags.map(([t, en, c]) => ({ t, en, c })),
+  open: null,
+  school: '五角场商圈',
+  distM: null,
+  verified: false,
+  dataStatus: 'collected',
+  addedAt: 1720000000000 + index,
+  daily_views: 0,
+}));
+
+const allRestaurantData = [...mockRestaurants, ...collectedRestaurants];
+
 export const useRestaurants = () => {
   const [currentSchool, setCurrentSchool] = useState('同济大学');
   const [activeNeed, setActiveNeed] = useState('all');
@@ -284,8 +323,8 @@ export const useRestaurants = () => {
 
   const schoolRestaurants = useMemo(() => (
     currentSchool === '全部'
-      ? mockRestaurants
-      : mockRestaurants.filter(r => r.school === currentSchool)
+      ? allRestaurantData
+      : allRestaurantData.filter(r => r.school === currentSchool)
   ), [currentSchool]);
 
   const filteredRestaurants = useMemo(() => {
@@ -317,7 +356,7 @@ export const useRestaurants = () => {
   };
 
   return {
-    allRestaurants: mockRestaurants,
+    allRestaurants: allRestaurantData,
     restaurants: filteredRestaurants,
     schoolRestaurants,
     currentSchool,

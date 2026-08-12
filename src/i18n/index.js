@@ -235,6 +235,18 @@ const resources = {
         tryLater: '请稍后再试'
       },
 
+      fullRanking: {
+        title: '五角场完整榜单',
+        subtitle: '覆盖同济、复旦、财大与五角场商圈',
+        total: '共收录 {{count}} 家',
+        allAreas: '全部区域',
+        verified: '已核验',
+        pending: '待核验',
+        pendingNote: '新收录门店仅展示可确认的信息，评分、营业状态与精确距离等待用户核验。',
+        noResults: '这个区域还没有收录餐厅',
+        sorts: { popularity: '综合', budget: '省钱', rating: '口碑', new: '新收录' }
+      },
+
       map: {
         ranking: '榜单',
         currentArea: '当前区域',
@@ -541,6 +553,18 @@ const resources = {
         defaultReason: 'Strong overall choice',
         noData: 'No ranking data yet',
         tryLater: 'Please try again later'
+      },
+
+      fullRanking: {
+        title: 'Complete Wujiaochang Ranking',
+        subtitle: 'Tongji, Fudan, SHUFE and the wider Wujiaochang area',
+        total: '{{count}} places listed',
+        allAreas: 'All areas',
+        verified: 'Verified',
+        pending: 'Pending verification',
+        pendingNote: 'New listings show only confirmed public information. Ratings, opening status and exact distance await community verification.',
+        noResults: 'No restaurants listed in this area yet',
+        sorts: { popularity: 'Overall', budget: 'Budget', rating: 'Rating', new: 'New listings' }
       },
 
       map: {
