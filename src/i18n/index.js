@@ -73,7 +73,7 @@ const resources = {
       },
       
       // Sections
-      todayRanking: '🔥 校园推荐榜',
+      todayRanking: '🔥 五角场推荐榜',
       viewFullRanking: '查看完整榜单',
       nearbyHot: '附近热门',
       searchResults: '搜索：{{label}}',
@@ -164,6 +164,89 @@ const resources = {
         filtered: '已筛选：{{label}}',
         showingAll: '已显示全部餐厅'
       },
+
+      common: {
+        verified: '已核验',
+        verifiedHelp: '已核验表示该餐厅信息已由学生确认，营业状态和价格等信息较为准确。',
+        openConfirmed: '已确认营业',
+        stillOpen: '这家还在吗？',
+        communityUpdated: '信息可由同学更新',
+        perPerson: '人',
+        removeFavorite: '取消收藏{{name}}'
+      },
+
+      profile: {
+        title: '我的主页',
+        verifiedStudent: '已认证学生',
+        verificationLabel: '查看学生认证说明',
+        verificationHelp: '学生认证用于建立区域推荐与信息核验的可信度。当前 MVP 为流程演示，正式版将接入校园邮箱认证。',
+        currentArea: '当前区域：{{area}}',
+        verifyTitle: '完成学生认证',
+        verifyDesc: '获得学生徽章，让餐厅推荐和信息核验更可信。',
+        verifyNotice: 'MVP 阶段为流程演示，正式版计划接入校园邮箱。',
+        verifyNow: '立即认证',
+        recommendations: '推荐',
+        favorites: '收藏',
+        decisions: '决定',
+        myRecommendations: '我的推荐',
+        addRecommendation: '添加推荐',
+        noRecommendations: '还没有推荐',
+        shareFood: '分享你发现的美食，帮助其他人做出选择。',
+        recommendNow: '立即推荐',
+        myFavorites: '我的收藏',
+        noFavorites: '还没有收藏，打开餐厅详情即可收藏。',
+        recentDecisions: '最近决定',
+        source: '来自{{source}}',
+        sourceWizard: '三步推荐',
+        sourceMap: '地图',
+        sourceDetail: '餐厅详情',
+        noDecisions: '选定“就吃这家”后，决定会保存在这里。',
+        usageRecord: '我的使用记录',
+        usageSummary: '{{details}} 次查看详情 · {{decisions}} 次完成决定',
+        localOnly: '使用数据仅保存在当前设备',
+        back: '返回个人中心',
+        deviceData: '本设备真实使用数据',
+        decisionRecord: '我的饮食决策记录',
+        dataExplanation: '数据来自你在当前设备上的实际点击，不包含演示浏览量。',
+        export: '导出',
+        completedDecisions: '完成决定',
+        favoriteRestaurants: '收藏餐厅',
+        detailConversion: '详情转化',
+        funnel: '决策漏斗',
+        deviceTotal: '当前设备累计',
+        visits: '访问页面',
+        detailViews: '查看详情',
+        useFilters: '使用筛选',
+        generateRecommendations: '生成推荐'
+      },
+
+      rankingDetail: {
+        back: '返回',
+        explanation: '当前收录 · 按评分与距离排序',
+        deviceViews: '本设备查看 {{count}} 次',
+        highRating: '{{rating}}分高口碑',
+        distance: '距你 {{distance}}m',
+        average: '人均 ¥{{price}}',
+        frequent: '本机常看',
+        highlyRated: '高分推荐',
+        reason: '推荐理由：{{reason}}',
+        defaultReason: '综合表现不错',
+        noData: '暂无榜单数据',
+        tryLater: '请稍后再试'
+      },
+
+      map: {
+        ranking: '榜单',
+        currentArea: '当前区域',
+        restaurantCount: '{{count}} 家餐厅',
+        score: '分',
+        walkAbout: '步行约 {{time}}分钟',
+        wantToGo: '想去',
+        viewDetails: '去看看',
+        noMatch: '附近暂无匹配餐厅',
+        tryFilters: '试试其他筛选条件',
+        reset: '重置筛选'
+      },
       
       // Recommendation - Updated for new flow
       recommend: {
@@ -195,6 +278,8 @@ const resources = {
           step2: '选择推荐理由',
           selectRestaurant: '选择餐厅',
           selectReasons: '选择推荐理由（可多选）',
+          searchPlaceholder: '搜索餐厅名称...',
+          noSearchResults: '未找到匹配的餐厅',
           reasons: {
             cheap: '超级实惠',
             taste: '排队也值',
@@ -296,7 +381,7 @@ const resources = {
       },
       
       // Sections
-      todayRanking: '🔥 Campus Picks',
+      todayRanking: '🔥 Wujiaochang Picks',
       viewFullRanking: 'View Full Ranking',
       nearbyHot: 'Nearby Hot',
       searchResults: 'Search: {{label}}',
@@ -339,11 +424,11 @@ const resources = {
       
       // Budget Options
       budgetOptions: {
-        low: '$10-20',
+        low: '¥10–20',
         lowSub: 'Budget saver',
-        mid: '$20-40',
+        mid: '¥20–40',
         midSub: 'Normal meal',
-        high: '$40+',
+        high: '¥40+',
         highSub: 'Treat yourself',
         any: 'Whatever',
         anySub: 'Don\'t care'
@@ -387,6 +472,89 @@ const resources = {
         filtered: 'Filtered: {{label}}',
         showingAll: 'Showing all restaurants'
       },
+
+      common: {
+        verified: 'Verified',
+        verifiedHelp: 'Verified information has been confirmed by local students, including opening status and price details.',
+        openConfirmed: 'Confirmed open',
+        stillOpen: 'Still open?',
+        communityUpdated: 'Community-updated info',
+        perPerson: 'person',
+        removeFavorite: 'Remove {{name}} from favorites'
+      },
+
+      profile: {
+        title: 'My Profile',
+        verifiedStudent: 'Verified Student',
+        verificationLabel: 'About student verification',
+        verificationHelp: 'Student verification improves the trustworthiness of local recommendations and restaurant information. This MVP demonstrates the flow; a future version may use university email verification.',
+        currentArea: 'Current area: {{area}}',
+        verifyTitle: 'Complete Student Verification',
+        verifyDesc: 'Get a student badge and help make recommendations and restaurant information more reliable.',
+        verifyNotice: 'This is an MVP demo. University email verification is planned for a future version.',
+        verifyNow: 'Verify Now',
+        recommendations: 'Recommendations',
+        favorites: 'Favorites',
+        decisions: 'Decisions',
+        myRecommendations: 'My Recommendations',
+        addRecommendation: 'Add',
+        noRecommendations: 'No recommendations yet',
+        shareFood: 'Share a great find and help others decide.',
+        recommendNow: 'Recommend Now',
+        myFavorites: 'My Favorites',
+        noFavorites: 'No favorites yet. Open a restaurant to save it.',
+        recentDecisions: 'Recent Decisions',
+        source: 'From {{source}}',
+        sourceWizard: '3-step picker',
+        sourceMap: 'Map',
+        sourceDetail: 'Restaurant details',
+        noDecisions: 'Choose “Eat here” and your decision will appear here.',
+        usageRecord: 'My Activity',
+        usageSummary: '{{details}} detail views · {{decisions}} decisions',
+        localOnly: 'Activity data is stored only on this device',
+        back: 'Back to Profile',
+        deviceData: 'Real activity on this device',
+        decisionRecord: 'My Dining Decisions',
+        dataExplanation: 'Based on your real actions on this device; demo view counts are excluded.',
+        export: 'Export',
+        completedDecisions: 'Decisions',
+        favoriteRestaurants: 'Favorites',
+        detailConversion: 'Detail conversion',
+        funnel: 'Decision Funnel',
+        deviceTotal: 'This device',
+        visits: 'Page visits',
+        detailViews: 'Detail views',
+        useFilters: 'Filters used',
+        generateRecommendations: 'Recommendations generated'
+      },
+
+      rankingDetail: {
+        back: 'Back',
+        explanation: 'Current listings · sorted by rating and distance',
+        deviceViews: 'Viewed {{count}} times here',
+        highRating: 'Highly rated at {{rating}}',
+        distance: '{{distance}}m away',
+        average: '¥{{price}} per person',
+        frequent: 'Frequently viewed',
+        highlyRated: 'Top rated',
+        reason: 'Why it fits: {{reason}}',
+        defaultReason: 'Strong overall choice',
+        noData: 'No ranking data yet',
+        tryLater: 'Please try again later'
+      },
+
+      map: {
+        ranking: 'Ranking',
+        currentArea: 'Current area',
+        restaurantCount: '{{count}} restaurants',
+        score: '',
+        walkAbout: 'About {{time}} min walk',
+        wantToGo: 'Save for later',
+        viewDetails: 'View details',
+        noMatch: 'No matching restaurants nearby',
+        tryFilters: 'Try another filter',
+        reset: 'Reset filters'
+      },
       
       // Recommendation - Updated for new flow
       recommend: {
@@ -418,6 +586,8 @@ const resources = {
           step2: 'Select Reasons',
           selectRestaurant: 'Select Restaurant',
           selectReasons: 'Select Reasons (Multiple choice)',
+          searchPlaceholder: 'Search restaurant names...',
+          noSearchResults: 'No matching restaurants found',
           reasons: {
             cheap: 'Great value',
             taste: 'Worth the wait',

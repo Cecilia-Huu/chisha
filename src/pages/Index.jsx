@@ -18,6 +18,7 @@ import { needIcons } from '../data/needOptions';
 import RestaurantDetailModal from '../components/RestaurantDetailModal';
 import ProfileDashboard from '../components/ProfileDashboard';
 import PersonalCenter from '../components/PersonalCenter';
+import { formatRestaurantMeta, getRestaurantName } from '../lib/restaurantI18n';
 import '../i18n';
 const Index = () => {
   const { t, i18n } = useTranslation();
@@ -144,13 +145,13 @@ const Index = () => {
   const handleStudentVerification = () => {
     setIsStudentVerified(true);
     trackEvent('student_verification_demo_complete', { school: currentSchool });
-    showToastMessage('学生认证成功（MVP 流程演示）');
+    showToastMessage(currentLanguage === 'zh' ? '学生认证成功（MVP 流程演示）' : 'Student verification completed (MVP demo)');
   };
 
   const handleToggleFavorite = (restaurantId, source) => {
     const added = !favorites.includes(restaurantId);
     toggleFavorite(restaurantId, source);
-    showToastMessage(added ? '已加入收藏' : '已取消收藏');
+    showToastMessage(currentLanguage === 'zh' ? (added ? '已加入收藏' : '已取消收藏') : (added ? 'Added to favorites' : 'Removed from favorites'));
   };
 
   const handleDetailReroll = () => {
@@ -158,7 +159,7 @@ const Index = () => {
     const matchingPool = restaurants.length > 1 ? restaurants : schoolRestaurants;
     const pool = matchingPool.filter(restaurant => restaurant.id !== selectedRestaurant.id && restaurant.open);
     if (!pool.length) {
-      showToastMessage('当前条件下没有其他餐厅了');
+      showToastMessage(currentLanguage === 'zh' ? '当前条件下没有其他餐厅了' : 'No other restaurants match these filters');
       return;
     }
     const next = pool[Math.floor(Math.random() * pool.length)];
@@ -171,7 +172,7 @@ const Index = () => {
     if (!selectedRestaurant) return;
     recordDecision(selectedRestaurant, detailSource, { need: activeNeed, school: currentSchool });
     setSelectedRestaurantId(null);
-    showToastMessage(`决定好了：就吃${selectedRestaurant.name}！`);
+    showToastMessage(currentLanguage === 'zh' ? `决定好了：就吃${selectedRestaurant.name}！` : `Decision made: ${getRestaurantName(selectedRestaurant, currentLanguage)}!`);
   };
 
   const showToastMessage = (message) => {
@@ -221,15 +222,15 @@ const Index = () => {
                   <div className="text-2xl">{restaurant.emoji}</div>
                   <div className="flex-1">
                     <div className="flex items-center gap-1">
-                      <span className="font-semibold">{restaurant.name}</span>
+                      <span className="font-semibold">{getRestaurantName(restaurant, currentLanguage)}</span>
                       {restaurant.verified && (
                         <span className="bg-blue-100 text-blue-800 text-xs px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
                           <GraduationCap size={10} />
-                          已核验
+                          {t('common.verified')}
                         </span>
                       )}
                     </div>
-                    <div className="text-sm text-gray-600">{restaurant.meta}</div>
+                    <div className="text-sm text-gray-600">{formatRestaurantMeta(restaurant, currentLanguage)}</div>
                   </div>
                   <div className="text-yellow-500 font-semibold">
                     ⭐ {restaurant.rating}
@@ -438,7 +439,7 @@ const Index = () => {
             {/* 最近使用的标签 */}
             {recentNeeds.length > 0 && activeNeed === 'all' && (
               <div className="px-5 pt-4">
-                <div className="text-xs text-[#9A8A78] mb-2">最近使用</div>
+                <div className="text-xs text-[#9A8A78] mb-2">{currentLanguage === 'zh' ? '最近使用' : 'Recently used'}</div>
                 <div className="flex gap-2 overflow-x-auto pb-2">
                   {recentNeeds.map((need) => {
                     return (

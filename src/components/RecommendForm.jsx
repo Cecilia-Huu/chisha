@@ -3,7 +3,7 @@ import { Star, X, Plus, Camera, MapPin, Check, ArrowRight, Search } from 'lucide
 import { useTranslation } from 'react-i18next';
 
 const RecommendForm = ({ isOpen, onClose, onSubmit }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [mode, setMode] = useState(null); // 'quick' or 'detailed'
   const [step, setStep] = useState(1); // 1: 选择餐厅, 2: 选择理由 (快速模式)
   const [searchTerm, setSearchTerm] = useState(''); // 搜索关键词
@@ -20,14 +20,14 @@ const RecommendForm = ({ isOpen, onClose, onSubmit }) => {
 
   // 模拟餐厅数据
   const mockRestaurants = [
-    { id: 1, name: '老孙家兰州拉面', emoji: '🍜' },
-    { id: 2, name: '夜宵烤串王', emoji: '🍖' },
-    { id: 3, name: '蜀味轩自助火锅', emoji: '🍲' },
-    { id: 4, name: '面条先生', emoji: '🍝' },
-    { id: 5, name: '米线小馆', emoji: '🥘' },
-    { id: 6, name: '西山牛排屋', emoji: '🥩' },
-    { id: 7, name: '珍珠奶茶铺', emoji: '🧋' },
-    { id: 8, name: '阿婆炒饭', emoji: '🍳' }
+    { id: 1, name: '老孙家兰州拉面', nameEn: 'Lao Sun Lanzhou Beef Noodles', emoji: '🍜' },
+    { id: 2, name: '夜宵烤串王', nameEn: 'Late-Night Skewer House', emoji: '🍖' },
+    { id: 3, name: '蜀味轩自助火锅', nameEn: 'Shuweixuan Hot Pot Buffet', emoji: '🍲' },
+    { id: 4, name: '面条先生', nameEn: 'Mr. Noodles', emoji: '🍝' },
+    { id: 5, name: '米线小馆', nameEn: 'Rice Noodle Kitchen', emoji: '🥘' },
+    { id: 6, name: '西山牛排屋', nameEn: 'Xishan Steakhouse', emoji: '🥩' },
+    { id: 7, name: '珍珠奶茶铺', nameEn: 'Pearl Milk Tea', emoji: '🧋' },
+    { id: 8, name: '阿婆炒饭', nameEn: "Granny's Fried Rice", emoji: '🍳' }
   ];
 
   // 推荐理由选项 - 修复国际化问题
@@ -48,7 +48,8 @@ const RecommendForm = ({ isOpen, onClose, onSubmit }) => {
   const filteredRestaurants = useMemo(() => {
     if (!searchTerm) return mockRestaurants;
     return mockRestaurants.filter(restaurant =>
-      restaurant.name.toLowerCase().includes(searchTerm.toLowerCase())
+      restaurant.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      restaurant.nameEn.toLowerCase().includes(searchTerm.toLowerCase())
     );
   }, [searchTerm]);
 
@@ -194,7 +195,7 @@ const RecommendForm = ({ isOpen, onClose, onSubmit }) => {
                       type="text"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
-                      placeholder="搜索餐厅名称..."
+                      placeholder={t('recommend.quick.searchPlaceholder')}
                       className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     />
                   </div>
@@ -211,7 +212,7 @@ const RecommendForm = ({ isOpen, onClose, onSubmit }) => {
                         }`}
                       >
                         <span className="text-xl">{restaurant.emoji}</span>
-                        <span className="text-sm truncate">{restaurant.name}</span>
+                        <span className="text-sm truncate">{i18n.language === 'zh' ? restaurant.name : restaurant.nameEn}</span>
                         {formData.restaurant?.id === restaurant.id && (
                           <Check size={16} className="text-red-500 ml-auto" />
                         )}
@@ -221,7 +222,7 @@ const RecommendForm = ({ isOpen, onClose, onSubmit }) => {
                   
                   {filteredRestaurants.length === 0 && searchTerm && (
                     <div className="text-center py-4 text-gray-500 text-sm">
-                      未找到匹配的餐厅
+                      {t('recommend.quick.noSearchResults')}
                     </div>
                   )}
                 </div>
@@ -320,7 +321,7 @@ const RecommendForm = ({ isOpen, onClose, onSubmit }) => {
                 <option value="">{t('recommend.detailed.selectRestaurant')}</option>
                 {mockRestaurants.map(restaurant => (
                   <option key={restaurant.id} value={restaurant.id}>
-                    {restaurant.emoji} {restaurant.name}
+                    {restaurant.emoji} {i18n.language === 'zh' ? restaurant.name : restaurant.nameEn}
                   </option>
                 ))}
               </select>

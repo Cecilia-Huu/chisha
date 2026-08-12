@@ -2,9 +2,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { MapPin, Navigation, Star, GraduationCap, Flame, Filter, Locate } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { getRestaurantName, getRestaurantTag, getSchoolName } from '../lib/restaurantI18n';
 
 const UniversityMap = ({ restaurants, onRestaurantClick, activeNeed, currentSchool, highlightId, onResetFilter }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const mapRef = useRef(null);
   const [selectedRestaurant, setSelectedRestaurant] = useState(null);
   const [showRanking, setShowRanking] = useState(false);
@@ -82,7 +83,7 @@ const UniversityMap = ({ restaurants, onRestaurantClick, activeNeed, currentScho
   // 获取步行时间
   const getWalkingTime = (distance) => {
     const time = Math.ceil(distance / 80);
-    return `${time}分钟`;
+    return time;
   };
 
   // 处理定位按钮点击
@@ -130,7 +131,7 @@ const UniversityMap = ({ restaurants, onRestaurantClick, activeNeed, currentScho
           }}
         >
           <div className={`px-2.5 py-1 rounded-full text-xs sm:text-sm font-semibold shadow-lg whitespace-nowrap ${currentSchool === uni.name || (currentSchool === '上海财经大学' && uni.name === '上海财经') ? 'bg-[#18120A] text-[#F0A500] ring-2 ring-[#F0A500]' : 'bg-blue-700 text-white'}`}>
-            🏫 {uni.name}
+            🏫 {getSchoolName(uni.name, i18n.language)}
           </div>
         </div>
       ))}
@@ -177,7 +178,7 @@ const UniversityMap = ({ restaurants, onRestaurantClick, activeNeed, currentScho
               {/* 餐厅名称和图标 */}
               <div className="mt-1 bg-white px-2 py-1 rounded-lg shadow-md text-xs whitespace-nowrap flex items-center gap-1">
                 <span>{getRestaurantIcon(restaurant)}</span>
-                <span className="font-medium">{restaurant.name}</span>
+                <span className="font-medium">{getRestaurantName(restaurant, i18n.language)}</span>
               </div>
               
               {/* 榜单高亮效果 */}
@@ -215,14 +216,14 @@ const UniversityMap = ({ restaurants, onRestaurantClick, activeNeed, currentScho
           className={`flex items-center gap-2 px-3 py-2 rounded-full shadow-lg transition-all ${showRanking ? 'bg-orange-500 text-white' : 'bg-white text-gray-800 hover:bg-orange-100'}`}
         >
           <Flame size={16} />
-          <span className="text-sm font-semibold">🔥 榜单</span>
+          <span className="text-sm font-semibold">🔥 {t('map.ranking')}</span>
         </button>
       </div>
 
       {/* 当前视野餐厅数量 */}
       <div className="absolute bottom-32 left-4 bg-white px-3 py-2 rounded-lg shadow-lg">
-        <div className="text-sm font-semibold">当前区域</div>
-        <div className="text-xs text-gray-600">{filteredRestaurants.length} 家餐厅</div>
+        <div className="text-sm font-semibold">{t('map.currentArea')}</div>
+        <div className="text-xs text-gray-600">{t('map.restaurantCount', { count: filteredRestaurants.length })}</div>
       </div>
 
       {/* 图例 - 底部卡片 */}
@@ -231,15 +232,15 @@ const UniversityMap = ({ restaurants, onRestaurantClick, activeNeed, currentScho
           <div className="flex items-center gap-3 sm:gap-4">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              <span className="text-xs">≥4.5分</span>
+              <span className="text-xs">≥4.5{t('map.score')}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-              <span className="text-xs">4.0-4.5分</span>
+              <span className="text-xs">4.0-4.5{t('map.score')}</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-red-500"></div>
-              <span className="text-xs">&lt;4.0分</span>
+              <span className="text-xs">&lt;4.0{t('map.score')}</span>
             </div>
           </div>
           <div className="flex items-center gap-3 border-t border-gray-100 pt-2 sm:border-0 sm:pt-0">
@@ -271,11 +272,11 @@ const UniversityMap = ({ restaurants, onRestaurantClick, activeNeed, currentScho
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2">
-                <h3 className="font-bold text-lg">{selectedRestaurant.name}</h3>
+                <h3 className="font-bold text-lg">{getRestaurantName(selectedRestaurant, i18n.language)}</h3>
                 {selectedRestaurant.verified && (
                   <span className="bg-blue-100 text-blue-800 text-xs px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
                     <GraduationCap size={10} />
-                    已核验
+                    {t('common.verified')}
                   </span>
                 )}
               </div>
@@ -283,7 +284,7 @@ const UniversityMap = ({ restaurants, onRestaurantClick, activeNeed, currentScho
                 <div className={`w-4 h-4 rounded-full flex items-center justify-center text-white text-xs ${getRatingColor(selectedRestaurant.rating)}`}>
                   {selectedRestaurant.rating}
                 </div>
-                <span>¥{selectedRestaurant.price}/人</span>
+                <span>¥{selectedRestaurant.price}/{t('common.perPerson')}</span>
                 <span>·</span>
                 <span>{selectedRestaurant.dist}m</span>
               </div>
@@ -293,7 +294,7 @@ const UniversityMap = ({ restaurants, onRestaurantClick, activeNeed, currentScho
                     key={index}
                     className="text-xs px-2 py-0.5 rounded bg-gray-100 text-gray-700"
                   >
-                    {tag.t}
+                    {getRestaurantTag(tag, i18n.language)}
                   </span>
                 ))}
               </div>
@@ -302,20 +303,20 @@ const UniversityMap = ({ restaurants, onRestaurantClick, activeNeed, currentScho
           
           <div className="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
             <div className="text-sm text-gray-600">
-              步行约 {getWalkingTime(selectedRestaurant.dist)}
+              {t('map.walkAbout', { time: getWalkingTime(selectedRestaurant.dist) })}
             </div>
             <div className="flex gap-2">
               <button
                 onClick={handleWantToGo}
                 className="px-3 py-1.5 bg-gray-100 text-gray-700 rounded-lg text-sm hover:bg-gray-200 transition-colors"
               >
-                🐾 想去
+                🐾 {t('map.wantToGo')}
               </button>
               <button
                 onClick={handleGoSee}
                 className="px-3 py-1.5 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600 transition-colors"
               >
-                去看看
+                {t('map.viewDetails')}
               </button>
             </div>
           </div>
@@ -337,13 +338,13 @@ const UniversityMap = ({ restaurants, onRestaurantClick, activeNeed, currentScho
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="bg-white p-6 rounded-xl shadow-xl text-center max-w-xs">
             <div className="text-4xl mb-3">🔍</div>
-            <div className="font-semibold text-lg mb-2">附近暂无匹配餐厅</div>
-            <div className="text-sm text-gray-600 mb-4">试试其他筛选条件</div>
+            <div className="font-semibold text-lg mb-2">{t('map.noMatch')}</div>
+            <div className="text-sm text-gray-600 mb-4">{t('map.tryFilters')}</div>
             <button
               onClick={onResetFilter}
               className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-600 transition-colors"
             >
-              重置筛选
+              {t('map.reset')}
             </button>
           </div>
         </div>

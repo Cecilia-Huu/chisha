@@ -3,6 +3,7 @@ import { ArrowLeft, GraduationCap, TrendingUp, TrendingDown, Minus, Star } from 
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useRestaurants } from '../hooks/useRestaurants';
+import { formatRestaurantMeta, getRestaurantName, getRestaurantTag } from '../lib/restaurantI18n';
 
 const RankingPage = () => {
   const { t, i18n } = useTranslation();
@@ -83,9 +84,9 @@ const RankingPage = () => {
 
   // 使用餐厅客观信息，不展示虚构趋势。
   const getTrendData = (restaurant, index) => {
-    if (index === 0) return { type: 'stable', label: `${restaurant.rating}分高口碑` };
-    if (index === 1) return { type: 'stable', label: `距你 ${restaurant.dist}m` };
-    return { type: 'stable', label: `人均 ¥${restaurant.price}` };
+    if (index === 0) return { type: 'stable', label: t('rankingDetail.highRating', { rating: restaurant.rating }) };
+    if (index === 1) return { type: 'stable', label: t('rankingDetail.distance', { distance: restaurant.dist }) };
+    return { type: 'stable', label: t('rankingDetail.average', { price: restaurant.price }) };
   };
 
   // 获取同学评论 - 使用ID作为key，支持i18n
@@ -119,7 +120,7 @@ const RankingPage = () => {
 
   const getRankBadge = (restaurant, index) => {
     // 使用trend_type字段决定徽章，而不是餐厅名称
-    if (index === 0) return { text: '高分推荐', class: 'bg-[#FFF3CD] text-[#856404]' };
+    if (index === 0) return { text: t('rankingDetail.highlyRated'), class: 'bg-[#FFF3CD] text-[#856404]' };
     return null;
   };
 
@@ -193,10 +194,10 @@ const RankingPage = () => {
           className="flex items-center gap-1 text-gray-600 hover:text-gray-900"
         >
           <ArrowLeft size={20} />
-          <span className="text-sm">返回</span>
+          <span className="text-sm">{t('rankingDetail.back')}</span>
         </button>
         <div className="font-['ZCOOL_XiaoWei'] text-lg">
-          🔥 {t('todayRanking')}
+          {t('todayRanking')}
         </div>
         <div className="w-16"></div> {/* 占位保持居中 */}
       </div>
@@ -220,7 +221,7 @@ const RankingPage = () => {
         </div>
         {/* 添加榜单说明 */}
         <div className="text-xs text-gray-500 text-center mt-2">
-          🏆 当前收录 · 按评分与距离排序
+          🏆 {t('rankingDetail.explanation')}
         </div>
       </div>
 
@@ -244,16 +245,16 @@ const RankingPage = () => {
                   <div className="text-2xl">{restaurant.emoji}</div>
                   <div className="flex-1">
                     <div className="flex items-center gap-1 mb-1">
-                      <span className="font-semibold">{restaurant.name}</span>
+                      <span className="font-semibold">{getRestaurantName(restaurant, i18n.language)}</span>
                       {restaurant.verified && (
                         <span className="bg-blue-100 text-blue-800 text-xs px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
                           <GraduationCap size={8} />
-                          已核验
+                          {t('common.verified')}
                         </span>
                       )}
                     </div>
                     <div className="text-xs text-[#9A8A78] font-['DM_Mono'] mb-1">
-                      {restaurant.meta}
+                      {formatRestaurantMeta(restaurant, i18n.language)}
                     </div>
                     {/* 趋势信息 */}
                     <div className="flex items-center gap-1 text-xs mb-1">
@@ -262,7 +263,7 @@ const RankingPage = () => {
                     </div>
                     {/* 餐厅标签形成可解释的推荐理由。 */}
                     <div className="text-xs text-gray-600 italic border-l-2 border-[#F0A500] pl-2 bg-[#FFFEF9] py-1 rounded-r">
-                      推荐理由：{restaurant.stags[0]?.t || '综合表现不错'}
+                      {t('rankingDetail.reason', { reason: restaurant.stags[0] ? getRestaurantTag(restaurant.stags[0], i18n.language) : t('rankingDetail.defaultReason') })}
                     </div>
                   </div>
                   <div className="flex flex-col items-end gap-1">
@@ -283,8 +284,8 @@ const RankingPage = () => {
           // 空状态处理
           <div className="text-center py-10 text-gray-500">
             <div className="text-4xl mb-3">🔍</div>
-            <div className="font-semibold text-lg mb-2">暂无榜单数据</div>
-            <div className="text-sm">请稍后再试</div>
+            <div className="font-semibold text-lg mb-2">{t('rankingDetail.noData')}</div>
+            <div className="text-sm">{t('rankingDetail.tryLater')}</div>
           </div>
         )}
       </div>

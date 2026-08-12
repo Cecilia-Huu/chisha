@@ -1,6 +1,7 @@
 import React from 'react';
 import { CheckCircle, Clock3, Heart, MapPin, RefreshCw, Star, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { getRestaurantName, getRestaurantTag, getSchoolName } from '../lib/restaurantI18n';
 
 const RestaurantDetailModal = ({
   restaurant,
@@ -15,6 +16,7 @@ const RestaurantDetailModal = ({
   if (!restaurant) return null;
 
   const zh = i18n.language === 'zh';
+  const restaurantName = getRestaurantName(restaurant, i18n.language);
   const walkingMinutes = Math.max(1, Math.ceil(restaurant.dist / 80));
   const sceneReason = activeNeed !== 'all' && restaurant.needs.includes(activeNeed)
     ? `${zh ? '符合你的场景' : 'Matches your need'}：${t(`needs.${activeNeed}`)}`
@@ -25,7 +27,7 @@ const RestaurantDetailModal = ({
       <section
         role="dialog"
         aria-modal="true"
-        aria-label={`${restaurant.name}${zh ? '详情' : ' details'}`}
+        aria-label={`${restaurantName}${zh ? '详情' : ' details'}`}
         className="relative bg-white w-full sm:max-w-[520px] rounded-t-3xl sm:rounded-3xl max-h-[92vh] overflow-y-auto shadow-2xl"
       >
         <button
@@ -45,7 +47,8 @@ const RestaurantDetailModal = ({
           <div className="flex items-start justify-between gap-3">
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="font-['ZCOOL_XiaoWei'] text-2xl">{restaurant.name}</h2>
+                <h2 className="font-['ZCOOL_XiaoWei'] text-2xl">{restaurantName}</h2>
+                {!zh && restaurant.nameEn && <span className="text-xs text-[#8B7D6C]">{restaurant.name}</span>}
                 {restaurant.verified && (
                   <span className="inline-flex items-center gap-1 bg-blue-50 text-blue-700 px-2 py-1 rounded-full text-xs">
                     <CheckCircle size={12} /> {zh ? '学生核验' : 'Verified'}
@@ -56,7 +59,7 @@ const RestaurantDetailModal = ({
                 <Star size={15} className="fill-[#F0A500] text-[#F0A500]" />
                 <strong className="text-[#18120A]">{restaurant.rating}</strong>
                 <span>· ¥{restaurant.price}/{zh ? '人' : 'person'}</span>
-                <span>· {restaurant.school}</span>
+                <span>· {getSchoolName(restaurant.school, i18n.language)}</span>
               </div>
             </div>
             <button
@@ -95,7 +98,7 @@ const RestaurantDetailModal = ({
             <div className="flex flex-wrap gap-2 mt-3">
               {restaurant.stags.map((tag, index) => (
                 <span key={index} className="text-xs px-2.5 py-1 rounded-full bg-[#F2EEE8] text-[#51473B]">
-                  {tag.t}
+                  {getRestaurantTag(tag, i18n.language)}
                 </span>
               ))}
             </div>

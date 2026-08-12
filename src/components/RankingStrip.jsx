@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { GraduationCap, TrendingUp, TrendingDown, Minus, Star, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { formatRestaurantMeta, getRestaurantName, getRestaurantTag } from '../lib/restaurantI18n';
 
 const RankingStrip = ({ restaurants, onRestaurantClick, onViewFullRanking, activeNeed, viewCounts = {} }) => {
   const { t, i18n } = useTranslation();
@@ -64,10 +65,10 @@ const RankingStrip = ({ restaurants, onRestaurantClick, onViewFullRanking, activ
   // 榜单说明优先展示当前设备真实浏览量，否则展示餐厅客观信息。
   const getTrendData = (restaurant, index) => {
     const count = viewCounts[restaurant.id] || 0;
-    if (count) return { type: 'up', label: `本设备查看 ${count} 次` };
-    if (index === 0) return { type: 'stable', label: `${restaurant.rating}分高口碑` };
-    if (index === 1) return { type: 'stable', label: `距你 ${restaurant.dist}m` };
-    return { type: 'stable', label: `人均 ¥${restaurant.price}` };
+    if (count) return { type: 'up', label: t('rankingDetail.deviceViews', { count }) };
+    if (index === 0) return { type: 'stable', label: t('rankingDetail.highRating', { rating: restaurant.rating }) };
+    if (index === 1) return { type: 'stable', label: t('rankingDetail.distance', { distance: restaurant.dist }) };
+    return { type: 'stable', label: t('rankingDetail.average', { price: restaurant.price }) };
   };
 
   // 获取同学评论 - 使用ID作为key，支持i18n
@@ -100,8 +101,8 @@ const RankingStrip = ({ restaurants, onRestaurantClick, onViewFullRanking, activ
   };
 
   const getRankBadge = (restaurant, index) => {
-    if ((viewCounts[restaurant.id] || 0) > 0) return { text: '本机常看', class: 'bg-[#E8F5E9] text-[#2E7D32]' };
-    if (index === 0) return { text: '高分推荐', class: 'bg-[#FFF3CD] text-[#856404]' };
+    if ((viewCounts[restaurant.id] || 0) > 0) return { text: t('rankingDetail.frequent'), class: 'bg-[#E8F5E9] text-[#2E7D32]' };
+    if (index === 0) return { text: t('rankingDetail.highlyRated'), class: 'bg-[#FFF3CD] text-[#856404]' };
     return null;
   };
 
@@ -152,7 +153,7 @@ const RankingStrip = ({ restaurants, onRestaurantClick, onViewFullRanking, activ
       {/* 榜单标题、Tab和查看完整榜单入口放在同一行 */}
       <div className="flex items-center justify-between mb-3">
         <div className="font-['ZCOOL_XiaoWei'] text-lg">
-          🔥 {getRankingTitle()}
+          {getRankingTitle()}
         </div>
         
         {/* 横滑Tab */}
@@ -200,16 +201,16 @@ const RankingStrip = ({ restaurants, onRestaurantClick, onViewFullRanking, activ
               <div className="text-2xl">{restaurant.emoji}</div>
               <div className="flex-1">
                 <div className="flex items-center gap-1 mb-0.5">
-                  <span className="text-sm font-semibold">{restaurant.name}</span>
+                  <span className="text-sm font-semibold">{getRestaurantName(restaurant, i18n.language)}</span>
                   {restaurant.verified && (
                     <span className="bg-blue-100 text-blue-800 text-xs px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
                       <GraduationCap size={8} />
-                      已核验
+                      {t('common.verified')}
                     </span>
                   )}
                 </div>
                 <div className="text-xs text-[#9A8A78] font-['DM_Mono'] mb-1">
-                  {restaurant.meta}
+                  {formatRestaurantMeta(restaurant, i18n.language)}
                 </div>
                 {/* 趋势信息 */}
                 <div className="flex items-center gap-1 text-xs mb-1">
@@ -218,7 +219,7 @@ const RankingStrip = ({ restaurants, onRestaurantClick, onViewFullRanking, activ
                 </div>
                 {/* 使用餐厅已有标签作为推荐理由，避免展示虚构评论。 */}
                 <div className="text-xs text-gray-600 italic border-l-2 border-[#F0A500] pl-2 bg-[#FFFEF9] py-1 rounded-r">
-                  推荐理由：{restaurant.stags[0]?.t || '综合表现不错'}
+                  {t('rankingDetail.reason', { reason: restaurant.stags[0] ? getRestaurantTag(restaurant.stags[0], i18n.language) : t('rankingDetail.defaultReason') })}
                 </div>
               </div>
               <div className="flex flex-col items-end gap-1">

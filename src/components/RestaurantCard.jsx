@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { CheckCircle, HelpCircle, Star } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { getRestaurantName, getRestaurantTag } from '../lib/restaurantI18n';
 
 const RestaurantCard = ({ restaurant, onClick, isFavorite, onToggleFavorite }) => {
+  const { t, i18n } = useTranslation();
+  const language = i18n.language;
   const [isVerified, setIsVerified] = useState(false);
   const [showVerificationTooltip, setShowVerificationTooltip] = useState(false);
 
@@ -73,12 +77,12 @@ const RestaurantCard = ({ restaurant, onClick, isFavorite, onToggleFavorite }) =
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2 mb-1">
           <div className="flex items-center gap-1">
-            <span className="text-base font-bold leading-tight">{restaurant.name}</span>
+            <span className="text-base font-bold leading-tight">{getRestaurantName(restaurant, language)}</span>
             {restaurant.verified && (
               <div className="relative">
                 <span className="bg-blue-100 text-blue-800 text-xs px-1.5 py-0.5 rounded-full flex items-center gap-0.5">
                   <CheckCircle size={10} />
-                  已核验
+                  {t('common.verified')}
                 </span>
                 <button 
                   onClick={handleVerificationHelp}
@@ -88,7 +92,7 @@ const RestaurantCard = ({ restaurant, onClick, isFavorite, onToggleFavorite }) =
                 </button>
                 {showVerificationTooltip && (
                   <div className="absolute top-6 left-0 bg-gray-800 text-white text-xs p-2 rounded shadow-lg z-10 w-48">
-                    已核验表示该餐厅信息已由学生确认，营业状态和价格等信息较为准确。
+                    {t('common.verifiedHelp')}
                     <div className="absolute -top-1 left-4 w-2 h-2 bg-gray-800 transform rotate-45"></div>
                   </div>
                 )}
@@ -108,7 +112,7 @@ const RestaurantCard = ({ restaurant, onClick, isFavorite, onToggleFavorite }) =
             <span className="ml-1 text-[#18120A] font-semibold">{restaurant.rating}</span>
           </div>
           <span>·</span>
-          <span>¥{restaurant.price}/人</span>
+          <span>¥{restaurant.price}/{t('common.perPerson')}</span>
           <span>·</span>
           <div className="flex items-center gap-1">
             <div className="w-2 h-2 rounded-full border border-blue-300 bg-transparent"></div>
@@ -121,7 +125,7 @@ const RestaurantCard = ({ restaurant, onClick, isFavorite, onToggleFavorite }) =
               key={index}
               className={`text-xs px-2 py-0.5 rounded-lg whitespace-nowrap ${getTagColor(tag.c)}`}
             >
-              {tag.t}
+              {getRestaurantTag(tag, language)}
             </span>
           ))}
         </div>
@@ -135,9 +139,9 @@ const RestaurantCard = ({ restaurant, onClick, isFavorite, onToggleFavorite }) =
             }`}
           >
             <HelpCircle size={12} />
-            {isVerified ? '已确认营业' : '这家还在吗？'}
+            {isVerified ? t('common.openConfirmed') : t('common.stillOpen')}
           </button>
-          <span className="text-xs text-gray-400">信息可由同学更新</span>
+          <span className="text-xs text-gray-400">{t('common.communityUpdated')}</span>
         </div>
       </div>
     </div>

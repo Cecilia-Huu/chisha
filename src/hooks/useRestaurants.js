@@ -4,6 +4,7 @@ const mockRestaurants = [
   {
     id: 0,
     name: "老孙家兰州拉面",
+    nameEn: "Lao Sun Lanzhou Beef Noodles",
     emoji: "🍜",
     bgColor: "linear-gradient(135deg,#FF6B35,#F7C59F)",
     rating: 4.9,
@@ -11,9 +12,9 @@ const mockRestaurants = [
     dist: 280,
     meta: "⭐4.9 · ¥18/人 · 280m",
     stags: [
-      { t: "💰 20元吃饱", c: "green" },
-      { t: "🔥 排队王", c: "red" },
-      { t: "学生9折", c: "amber" }
+      { t: "💰 20元吃饱", en: "💰 Full meal under ¥20", c: "green" },
+      { t: "🔥 排队王", en: "🔥 Always popular", c: "red" },
+      { t: "学生9折", en: "10% student discount", c: "amber" }
     ],
     open: true,
     school: "同济大学",
@@ -28,6 +29,7 @@ const mockRestaurants = [
   {
     id: 1,
     name: "夜宵烤串王",
+    nameEn: "Late-Night Skewer House",
     emoji: "🍖",
     bgColor: "linear-gradient(135deg,#8B2635,#F4A261)",
     rating: 4.6,
@@ -35,9 +37,9 @@ const mockRestaurants = [
     dist: 420,
     meta: "⭐4.6 · ¥32/人 · 420m",
     stags: [
-      { t: "🌙 夜宵圣地", c: "purple" },
-      { t: "🌶️ 巨辣可选", c: "red" },
-      { t: "聚餐必选", c: "" }
+      { t: "🌙 夜宵圣地", en: "🌙 Late-night favorite", c: "purple" },
+      { t: "🌶️ 巨辣可选", en: "🌶️ Extra spicy available", c: "red" },
+      { t: "聚餐必选", en: "Great for groups", c: "" }
     ],
     open: true,
     school: "复旦大学",
@@ -52,6 +54,7 @@ const mockRestaurants = [
   {
     id: 2,
     name: "蜀味轩自助火锅",
+    nameEn: "Shuweixuan Hot Pot Buffet",
     emoji: "🍲",
     bgColor: "linear-gradient(135deg,#C84B31,#ECDBBA)",
     rating: 4.8,
@@ -59,9 +62,9 @@ const mockRestaurants = [
     dist: 190,
     meta: "⭐4.8 · ¥39/人 · 190m",
     stags: [
-      { t: "🔥 排队王", c: "red" },
-      { t: "🌶️ 巨辣", c: "red" },
-      { t: "学生套餐¥28", c: "green" }
+      { t: "🔥 排队王", en: "🔥 Always popular", c: "red" },
+      { t: "🌶️ 巨辣", en: "🌶️ Extra spicy", c: "red" },
+      { t: "学生套餐¥28", en: "Student set ¥28", c: "green" }
     ],
     open: true,
     school: "上海财经大学",
@@ -76,6 +79,7 @@ const mockRestaurants = [
   {
     id: 3,
     name: "面条先生",
+    nameEn: "Mr. Noodles",
     emoji: "🍝",
     bgColor: "linear-gradient(135deg,#E9C46A,#F4A261)",
     rating: 4.5,
@@ -83,9 +87,9 @@ const mockRestaurants = [
     dist: 120,
     meta: "⭐4.5 · ¥14/人 · 120m",
     stags: [
-      { t: "💰 20元吃饱", c: "green" },
-      { t: "⚡ 不用排队", c: "amber" },
-      { t: "快出餐", c: "" }
+      { t: "💰 20元吃饱", en: "💰 Full meal under ¥20", c: "green" },
+      { t: "⚡ 不用排队", en: "⚡ Usually no queue", c: "amber" },
+      { t: "快出餐", en: "Fast service", c: "" }
     ],
     open: true,
     school: "复旦大学",
@@ -100,6 +104,7 @@ const mockRestaurants = [
   {
     id: 4,
     name: "米线小馆",
+    nameEn: "Rice Noodle Kitchen",
     emoji: "🥘",
     bgColor: "linear-gradient(135deg,#2A9D8F,#E9C46A)",
     rating: 4.4,
@@ -107,8 +112,8 @@ const mockRestaurants = [
     dist: 350,
     meta: "⭐4.4 · ¥20/人 · 350m",
     stags: [
-      { t: "💰 20元吃饱", c: "green" },
-      { t: "📦 外卖超快", c: "amber" }
+      { t: "💰 20元吃饱", en: "💰 Full meal under ¥20", c: "green" },
+      { t: "📦 外卖超快", en: "📦 Fast delivery", c: "amber" }
     ],
     open: false,
     school: "同济大学",
@@ -123,6 +128,7 @@ const mockRestaurants = [
   {
     id: 5,
     name: "西山牛排屋",
+    nameEn: "Xishan Steakhouse",
     emoji: "🥩",
     bgColor: "linear-gradient(135deg,#264653,#2A9D8F)",
     rating: 4.7,
@@ -130,9 +136,9 @@ const mockRestaurants = [
     dist: 500,
     meta: "⭐4.7 · ¥62/人 · 500m",
     stags: [
-      { t: "🌸 约会首选", c: "purple" },
-      { t: "精致", c: "" },
-      { t: "可预订", c: "amber" }
+      { t: "🌸 约会首选", en: "🌸 Great for dates", c: "purple" },
+      { t: "精致", en: "Refined setting", c: "" },
+      { t: "可预订", en: "Reservations available", c: "amber" }
     ],
     open: true,
     school: "复旦大学",
@@ -147,6 +153,7 @@ const mockRestaurants = [
   {
     id: 6,
     name: "珍珠奶茶铺",
+    nameEn: "Pearl Milk Tea",
     emoji: "🧋",
     bgColor: "linear-gradient(135deg,#F4ACB7,#FFCAD4)",
     rating: 4.8,
@@ -154,9 +161,9 @@ const mockRestaurants = [
     dist: 80,
     meta: "⭐4.8 · ¥16/人 · 80m",
     stags: [
-      { t: "🥤 奶茶天堂", c: "purple" },
-      { t: "学生8折", c: "green" },
-      { t: "📦 可外卖", c: "amber" }
+      { t: "🥤 奶茶天堂", en: "🥤 Milk tea favorite", c: "purple" },
+      { t: "学生8折", en: "20% student discount", c: "green" },
+      { t: "📦 可外卖", en: "📦 Delivery available", c: "amber" }
     ],
     open: true,
     school: "同济大学",
@@ -171,6 +178,7 @@ const mockRestaurants = [
   {
     id: 7,
     name: "阿婆炒饭",
+    nameEn: "Granny's Fried Rice",
     emoji: "🍳",
     bgColor: "linear-gradient(135deg,#606C38,#DDA15E)",
     rating: 4.3,
@@ -178,9 +186,9 @@ const mockRestaurants = [
     dist: 60,
     meta: "⭐4.3 · ¥12/人 · 60m",
     stags: [
-      { t: "💰 20元吃饱", c: "green" },
-      { t: "⚡ 不用排队", c: "amber" },
-      { t: "分量超大", c: "" }
+      { t: "💰 20元吃饱", en: "💰 Full meal under ¥20", c: "green" },
+      { t: "⚡ 不用排队", en: "⚡ Usually no queue", c: "amber" },
+      { t: "分量超大", en: "Large portions", c: "" }
     ],
     open: true,
     school: "上海财经大学",
@@ -195,6 +203,7 @@ const mockRestaurants = [
   {
     id: 8,
     name: "轻食研究所",
+    nameEn: "Light Food Lab",
     emoji: "🥗",
     bgColor: "linear-gradient(135deg,#81B29A,#F2CC8F)",
     rating: 4.7,
@@ -202,9 +211,9 @@ const mockRestaurants = [
     dist: 160,
     meta: "⭐4.7 · ¥26/人 · 160m",
     stags: [
-      { t: "🥗 轻食低负担", c: "green" },
-      { t: "🥬 素食可选", c: "green" },
-      { t: "📦 可外卖", c: "amber" }
+      { t: "🥗 轻食低负担", en: "🥗 Light and balanced", c: "green" },
+      { t: "🥬 素食可选", en: "🥬 Vegetarian options", c: "green" },
+      { t: "📦 可外卖", en: "📦 Delivery available", c: "amber" }
     ],
     open: true,
     school: "同济大学",
@@ -219,6 +228,7 @@ const mockRestaurants = [
   {
     id: 9,
     name: "湘味小炒",
+    nameEn: "Hunan Stir-Fry",
     emoji: "🌶️",
     bgColor: "linear-gradient(135deg,#C44536,#F6BD60)",
     rating: 4.6,
@@ -226,9 +236,9 @@ const mockRestaurants = [
     dist: 230,
     meta: "⭐4.6 · ¥29/人 · 230m",
     stags: [
-      { t: "🌶️ 辣度可选", c: "red" },
-      { t: "🍚 分量很足", c: "green" },
-      { t: "👥 聚餐友好", c: "amber" }
+      { t: "🌶️ 辣度可选", en: "🌶️ Adjustable spice", c: "red" },
+      { t: "🍚 分量很足", en: "🍚 Generous portions", c: "green" },
+      { t: "👥 聚餐友好", en: "👥 Group-friendly", c: "amber" }
     ],
     open: true,
     school: "上海财经大学",
@@ -243,6 +253,7 @@ const mockRestaurants = [
   {
     id: 10,
     name: "校园早餐铺",
+    nameEn: "Breakfast Corner",
     emoji: "🥟",
     bgColor: "linear-gradient(135deg,#F4D35E,#EE964B)",
     rating: 4.5,
@@ -250,9 +261,9 @@ const mockRestaurants = [
     dist: 90,
     meta: "⭐4.5 · ¥9/人 · 90m",
     stags: [
-      { t: "🥟 早餐现做", c: "amber" },
-      { t: "⚡ 3分钟出餐", c: "green" },
-      { t: "💰 10元吃饱", c: "green" }
+      { t: "🥟 早餐现做", en: "🥟 Fresh breakfast", c: "amber" },
+      { t: "⚡ 3分钟出餐", en: "⚡ Ready in 3 minutes", c: "green" },
+      { t: "💰 10元吃饱", en: "💰 Full meal under ¥10", c: "green" }
     ],
     open: true,
     school: "复旦大学",

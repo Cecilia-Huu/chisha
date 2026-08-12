@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { formatRestaurantMeta, getRestaurantName } from '../lib/restaurantI18n';
 
 const WizardModal = ({ isOpen, onClose, onResult, onRecommendationGenerated, restaurants = [] }) => {
   const { t, i18n } = useTranslation();
@@ -117,16 +118,16 @@ const WizardModal = ({ isOpen, onClose, onResult, onRecommendationGenerated, res
 
     const newResult = {
       id: selected.id,
-      name: selected.name,
+      name: getRestaurantName(selected, i18n.language),
       emoji: selected.emoji,
-      meta: selected.meta,
+      meta: formatRestaurantMeta(selected, i18n.language),
       reasons: [
         ...(!isExactMatch ? [i18n.language === 'zh'
           ? '• ⚠️ 没有完全匹配，已推荐最接近条件的选择'
           : '• ⚠️ No exact match; showing the closest option'] : []),
-        `• 📍 距离 ${selected.distM}m`,
-        `• 💰 ¥${selected.price}/人`,
-        `• ⭐ 评分 ${selected.rating}`
+        i18n.language === 'zh' ? `• 📍 距离 ${selected.distM}m` : `• 📍 ${selected.distM}m away`,
+        i18n.language === 'zh' ? `• 💰 ¥${selected.price}/人` : `• 💰 ¥${selected.price} per person`,
+        i18n.language === 'zh' ? `• ⭐ 评分 ${selected.rating}` : `• ⭐ Rating ${selected.rating}`
       ]
     };
 
