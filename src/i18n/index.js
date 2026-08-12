@@ -75,8 +75,8 @@ const resources = {
       // Sections
       todayRanking: '🔥 五角场推荐榜',
       viewFullRanking: '查看完整榜单',
-      nearbyHot: '附近热门',
-      searchResults: '搜索：{{label}}',
+      nearbyHot: '综合推荐',
+      searchResults: '符合「{{label}}」',
       resetFilter: '重置筛选',
       
       // Ranking
@@ -237,14 +237,15 @@ const resources = {
 
       fullRanking: {
         title: '五角场完整榜单',
-        homeEntry: '完整榜单 · {{count}}家 →',
+        homeEntry: '完整榜单 →',
         subtitle: '覆盖同济、复旦、财大与五角场商圈',
         total: '共收录 {{count}} 家',
         allAreas: '全部区域',
         verified: '已核验',
         pending: '待核验',
         pendingNote: '新收录门店仅展示可确认的信息，评分、营业状态与精确距离等待用户核验。',
-        noResults: '这个区域还没有收录餐厅',
+        noResults: '当前条件下还没有收录餐厅',
+        currentNeed: '当前需求',
         sorts: { popularity: '综合', budget: '省钱', rating: '口碑', new: '新收录' }
       },
 
@@ -396,8 +397,8 @@ const resources = {
       // Sections
       todayRanking: '🔥 Wujiaochang Picks',
       viewFullRanking: 'View Full Ranking',
-      nearbyHot: 'Nearby Hot',
-      searchResults: 'Search: {{label}}',
+      nearbyHot: 'Overall Picks',
+      searchResults: 'Matches “{{label}}”',
       resetFilter: 'Reset Filter',
       
       // Ranking
@@ -558,14 +559,15 @@ const resources = {
 
       fullRanking: {
         title: 'Complete Wujiaochang Ranking',
-        homeEntry: 'Full ranking · {{count}} →',
+        homeEntry: 'Full ranking →',
         subtitle: 'Tongji, Fudan, SHUFE and the wider Wujiaochang area',
         total: '{{count}} places listed',
         allAreas: 'All areas',
         verified: 'Verified',
         pending: 'Pending verification',
         pendingNote: 'New listings show only confirmed public information. Ratings, opening status and exact distance await community verification.',
-        noResults: 'No restaurants listed in this area yet',
+        noResults: 'No restaurants match these filters yet',
+        currentNeed: 'Current need',
         sorts: { popularity: 'Overall', budget: 'Budget', rating: 'Rating', new: 'New listings' }
       },
 

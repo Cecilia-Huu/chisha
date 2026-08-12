@@ -1,41 +1,38 @@
-import React, { useMemo, useState } from 'react';
-import { CheckCircle, ChevronRight, Clock3, MapPin } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { CheckCircle, ChevronRight, Clock3, MapPin, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { formatRestaurantMeta, getAreaName, getRestaurantName, getRestaurantTag, getSchoolName } from '../lib/restaurantI18n';
+import { sortRestaurants } from '../lib/ranking';
 
 const sortKeys = ['popularity', 'budget', 'rating', 'new'];
 
-const FullRanking = ({ restaurants, initialSort = 'popularity', onRestaurantClick }) => {
+const FullRanking = ({ restaurants, initialSort = 'popularity', initialArea = 'all', initialNeed = 'all', onRestaurantClick }) => {
   const { t, i18n } = useTranslation();
   const [sortBy, setSortBy] = useState(sortKeys.includes(initialSort) ? initialSort : 'popularity');
-  const [area, setArea] = useState('all');
+  const [area, setArea] = useState(initialArea === '全部' ? 'all' : initialArea);
+  const [need, setNeed] = useState(initialNeed);
+
+  useEffect(() => {
+    setArea(initialArea === '全部' ? 'all' : initialArea);
+  }, [initialArea]);
+
+  useEffect(() => {
+    setNeed(initialNeed);
+  }, [initialNeed]);
 
   const areas = useMemo(() => [...new Set(restaurants.map(restaurant => restaurant.school))], [restaurants]);
   const rankedRestaurants = useMemo(() => {
-    const filtered = area === 'all' ? [...restaurants] : restaurants.filter(restaurant => restaurant.school === area);
-    return filtered.sort((a, b) => {
-      if (sortBy === 'budget') {
-        if (a.price == null) return 1;
-        if (b.price == null) return -1;
-        return a.price - b.price || (b.rating || 0) - (a.rating || 0);
-      }
-      if (sortBy === 'rating') {
-        if (a.rating == null) return 1;
-        if (b.rating == null) return -1;
-        return b.rating - a.rating || a.price - b.price;
-      }
-      if (sortBy === 'new') return b.addedAt - a.addedAt;
-      if (a.verified !== b.verified) return Number(b.verified) - Number(a.verified);
-      return (b.rating || 0) - (a.rating || 0) || (a.dist || Infinity) - (b.dist || Infinity);
-    });
-  }, [area, restaurants, sortBy]);
+    const areaRestaurants = area === 'all' ? restaurants : restaurants.filter(restaurant => restaurant.school === area);
+    const filtered = need === 'all' ? areaRestaurants : areaRestaurants.filter(restaurant => restaurant.needs.includes(need));
+    return sortRestaurants(filtered, sortBy);
+  }, [area, need, restaurants, sortBy]);
 
   return (
     <div className="max-w-3xl mx-auto px-4 py-5 sm:px-5 space-y-4">
       <section className="rounded-2xl bg-[#18120A] text-white p-5 overflow-hidden relative">
         <div className="absolute -right-7 -top-8 text-8xl opacity-10">🍽️</div>
         <div className="relative">
-          <div className="text-xs text-[#F0A500] mb-1">{t('fullRanking.total', { count: restaurants.length })}</div>
+          <div className="text-xs text-[#F0A500] mb-1">{t('fullRanking.total', { count: rankedRestaurants.length })}</div>
           <h1 className="font-['ZCOOL_XiaoWei'] text-2xl">{t('fullRanking.title')}</h1>
           <p className="text-sm text-white/65 mt-2">{t('fullRanking.subtitle')}</p>
         </div>
@@ -60,6 +57,14 @@ const FullRanking = ({ restaurants, initialSort = 'popularity', onRestaurantClic
             <button key={item} type="button" onClick={() => setArea(item)} className={`px-3 py-1.5 rounded-full text-xs whitespace-nowrap border ${area === item ? 'bg-[#D94F2B] border-[#D94F2B] text-white' : 'bg-white border-black/10'}`}>{getSchoolName(item, i18n.language)}</button>
           ))}
         </div>
+        {need !== 'all' && (
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-[#8B7D6C]">{t('fullRanking.currentNeed')}</span>
+            <button type="button" onClick={() => setNeed('all')} className="inline-flex items-center gap-1 rounded-full bg-[#FFF0EB] text-[#C74222] px-2.5 py-1 text-xs">
+              {t(`needs.${need}`)} <X size={12} />
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="rounded-xl bg-[#FFF8E8] border border-[#F5D98A] px-3.5 py-3 text-xs leading-5 text-[#6A531C] flex gap-2">

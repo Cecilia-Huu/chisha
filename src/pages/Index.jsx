@@ -19,6 +19,7 @@ import ProfileDashboard from '../components/ProfileDashboard';
 import PersonalCenter from '../components/PersonalCenter';
 import { getRestaurantName } from '../lib/restaurantI18n';
 import FullRanking from '../components/FullRanking';
+import { sortRestaurants } from '../lib/ranking';
 import '../i18n';
 const Index = () => {
   const { t, i18n } = useTranslation();
@@ -63,6 +64,7 @@ const Index = () => {
 
   const selectedRestaurant = allRestaurants.find(restaurant => restaurant.id === selectedRestaurantId) || null;
   const favoriteRestaurants = allRestaurants.filter(restaurant => favorites.includes(restaurant.id));
+  const homeRestaurants = sortRestaurants(restaurants, 'popularity').slice(0, 4);
   useEffect(() => {
     if (!hasTrackedVisit.current) {
       hasTrackedVisit.current = true;
@@ -203,6 +205,8 @@ const Index = () => {
           <FullRanking
             restaurants={allRestaurants}
             initialSort={fullRankingSort}
+            initialArea={currentSchool}
+            initialNeed={activeNeed}
             onRestaurantClick={(id) => handleRestaurantClick(id, 'full_ranking')}
           />
         );
@@ -449,15 +453,15 @@ const Index = () => {
                   onClick={() => handleOpenFullRanking('popularity')}
                   className="text-xs font-semibold text-[#D94F2B] whitespace-nowrap"
                 >
-                  {t('fullRanking.homeEntry', { count: allRestaurants.length })}
+                  {t('fullRanking.homeEntry')}
                 </button>
               </div>
             </div>
 
             <div className="px-5">
               <div className="flex flex-col gap-2.5">
-                {restaurants.length > 0 ? (
-                  restaurants.map((restaurant, index) => (
+                {homeRestaurants.length > 0 ? (
+                  homeRestaurants.map((restaurant, index) => (
                     <div key={restaurant.id} style={{ animationDelay: `${index * 0.05}s` }}>
                       <RestaurantCard
                         restaurant={restaurant}
